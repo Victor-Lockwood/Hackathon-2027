@@ -30,3 +30,4 @@ myo_calibration.json
 
 # PowerPoint / Keynote lock files
 ~$*
+/data/
