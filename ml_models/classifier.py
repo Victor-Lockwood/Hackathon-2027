@@ -94,13 +94,16 @@ def sim_continuous(rf=None, window_size=150):
 
             if len(window) % window_size == 0:
                 arr = np.asarray(window)
-                df = pd.DataFrame(data=arr)
-
-                proc_arr = np.zeros_like(arr)
-                for col_idx in range(arr.shape[1]):
-                    col = arr[:,col_idx]
-                    proc_col = butter_bandstop_filter(col)
-                    proc_arr[:,col_idx] = proc_col
+                arr = arr.astype(int)
+                arr = np.transpose(arr)
+                arr = np.apply_along_axis(butter_bandstop_filter, 1, arr)
+                # df = pd.DataFrame(data=arr)
+                #
+                # proc_arr = np.zeros_like(arr)
+                # for col_idx in range(arr.shape[1]):
+                #     col = arr[:,col_idx]
+                #     proc_col = butter_bandstop_filter(col)
+                #     proc_arr[:,col_idx] = proc_col
 
                 # print(rf.predict(window))
 
