@@ -14,6 +14,7 @@ import csv
 def main():
     model_path = "model.pkl"
 
+    load_data()
     rf = None
     if os.path.isfile(model_path):
         rf = pickle.load(open(model_path, 'rb'))
@@ -27,7 +28,6 @@ def main():
         rf = random_forest(X_train, y_train, X_test, y_test)
         pickle.dump(rf, open(model_path, 'wb'))
 
-    sim_continuous(rf)
 
 
 def random_forest(X_train, y_train, X_test, y_test):
@@ -66,7 +66,8 @@ def load_data(window_size=150):
 
     myo_data = pd.concat(dataframes, axis=0, ignore_index=True)
 
-    windows = [myo_data[i:i + window_size] for i in range(0, len(myo_data), window_size)]
+    step = 50
+    windows = [myo_data[i:i + window_size] for i in range(0, len(myo_data) - window_size + 1, step)]
 
     for window in windows:
         window['EMG_1'] = butter_bandstop_filter(window['EMG_1'])
